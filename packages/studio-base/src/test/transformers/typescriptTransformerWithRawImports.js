@@ -18,10 +18,20 @@ function rewriteSource(source, sourcePath) {
 }
 
 module.exports = {
-  process(sourceText, sourcePath, opt) {
-    return babelJest.process(rewriteSource(sourceText, sourcePath), sourcePath, opt);
-  },
-  getCacheKey(sourceText, sourcePath, opt) {
-    return babelJest.getCacheKey(rewriteSource(sourceText, sourcePath), sourcePath, opt);
+  createTransformer: (config) => {
+    const bableSyncTransformer = babelJest.createTransformer(config);
+
+    return {
+      process(sourceText, sourcePath, opt) {
+        return bableSyncTransformer.process(rewriteSource(sourceText, sourcePath), sourcePath, opt);
+      },
+      getCacheKey(sourceText, sourcePath, opt) {
+        return bableSyncTransformer.getCacheKey(
+          rewriteSource(sourceText, sourcePath),
+          sourcePath,
+          opt,
+        );
+      },
+    };
   },
 };
