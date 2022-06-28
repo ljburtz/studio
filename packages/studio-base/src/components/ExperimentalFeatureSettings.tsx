@@ -99,6 +99,11 @@ if (process.env.NODE_ENV === "development") {
       </>
     ),
   });
+  features.push({
+    key: AppSetting.ENABLE_MEMORY_USE_INDICATOR,
+    name: "Memory use indicator",
+    description: <>Show the app memory use in the sidebar.</>,
+  });
 }
 
 function ExperimentalFeatureItem(props: { feature: Feature }) {
