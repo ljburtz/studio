@@ -23,6 +23,7 @@ import ConsoleApiContext from "@foxglove/studio-base/context/ConsoleApiContext";
 import { HoverValueProvider } from "@foxglove/studio-base/context/HoverValueContext";
 import ModalHost from "@foxglove/studio-base/context/ModalHost";
 import { UserNodeStateProvider } from "@foxglove/studio-base/context/UserNodeStateContext";
+import { UserProfileStorageContext } from "@foxglove/studio-base/context/UserProfileStorageContext";
 import { useAppConfigurationValue } from "@foxglove/studio-base/hooks";
 import CurrentLayoutProvider from "@foxglove/studio-base/providers/CurrentLayoutProvider";
 import ExtensionCatalogProvider from "@foxglove/studio-base/providers/ExtensionCatalogProvider";
@@ -30,11 +31,11 @@ import ExtensionMarketplaceProvider from "@foxglove/studio-base/providers/Extens
 import HelpInfoProvider from "@foxglove/studio-base/providers/HelpInfoProvider";
 import LayoutManagerProvider from "@foxglove/studio-base/providers/LayoutManagerProvider";
 import PanelCatalogProvider from "@foxglove/studio-base/providers/PanelCatalogProvider";
+import { LayoutID } from "@foxglove/studio-base/services/ILayoutStorage";
 import ThemeProvider from "@foxglove/studio-base/theme/ThemeProvider";
 import { makeMockAppConfiguration } from "@foxglove/studio-base/util/makeMockAppConfiguration";
 
 import MemoryLayoutStorageProvider from "./providers/MemoryLayoutStorageProvider";
-import MemoryUserProfileProvider from "./providers/MemoryUserProfileProvider";
 import McapLocalBenchmarkDataSourceFactory from "./services/McapLocalBenchmarkDataSourceFactory";
 
 function ColorSchemeThemeProvider({ children }: React.PropsWithChildren<unknown>): JSX.Element {
@@ -59,12 +60,20 @@ export function Root(): JSX.Element {
     ]),
   );
 
+  const userProfile = useMemo(
+    () => ({
+      getUserProfile: async () => ({ currentLayoutId: "benchmark-raw-messages" as LayoutID }),
+      setUserProfile: async () => {},
+    }),
+    [],
+  );
+
   const providers = [
     /* eslint-disable react/jsx-key */
     <ConsoleApiContext.Provider value={new ConsoleApi("")} />,
     <StudioToastProvider />,
     <MemoryLayoutStorageProvider />,
-    <MemoryUserProfileProvider />,
+    <UserProfileStorageContext.Provider value={userProfile} />,
     <AnalyticsProvider />,
     <LayoutManagerProvider />,
     <ModalHost />,
