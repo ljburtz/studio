@@ -2,6 +2,8 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
+/* eslint-disable no-restricted-syntax */
+
 import {
   IDataSourceFactory,
   DataSourceFactoryInitializeArgs,
@@ -47,6 +49,9 @@ class BenchmarkPlayer implements Player {
   publish(_request: PublishPayload): void {
     throw new Error("Method not implemented.");
   }
+  async callService(_service: string, _request: unknown): Promise<unknown> {
+    throw new Error("Method not implemented.");
+  }
   requestBackfill(): void {
     //throw new Error("Method not implemented.");
   }
@@ -63,6 +68,7 @@ class BenchmarkPlayer implements Player {
     }
 
     await listener({
+      profile: undefined,
       presence: PlayerPresence.INITIALIZING,
       name: this.name + "\ninitializing provider",
       playerId: this.name,
@@ -77,6 +83,7 @@ class BenchmarkPlayer implements Player {
     });
 
     await listener({
+      profile: undefined,
       presence: PlayerPresence.INITIALIZING,
       name: this.name + "\ngetting messages",
       playerId: this.name,
@@ -87,7 +94,7 @@ class BenchmarkPlayer implements Player {
     const start = result.start;
     const end = result.end;
     const topics = result.topics;
-    const parsedMessageDefinitionsByTopic = {};
+    const topicStats = result.topicStats;
 
     let datatypes = new Map();
     if (result.messageDefinitions.type === "parsed") {
@@ -115,6 +122,7 @@ class BenchmarkPlayer implements Player {
     // we have messages - now we should emit them one by one
     for (const message of parsedMessages) {
       await listener({
+        profile: undefined,
         presence: PlayerPresence.PRESENT,
         name: this.name,
         playerId: this.name,
@@ -131,8 +139,8 @@ class BenchmarkPlayer implements Player {
           speed: 1,
           lastSeekTime: 1,
           topics,
+          topicStats,
           datatypes,
-          parsedMessageDefinitionsByTopic,
         },
       });
     }
@@ -155,7 +163,7 @@ class McapLocalBenchmarkDataSourceFactory implements IDataSourceFactory {
       return;
     }
 
-    const mcapProvider = new McapDataProvider({ file });
+    const mcapProvider = new McapDataProvider({ source: { type: "file", file } });
     return new BenchmarkPlayer(file.name, mcapProvider);
   }
 }

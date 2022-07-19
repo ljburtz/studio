@@ -4,13 +4,8 @@
 
 import { PropsWithChildren, useState } from "react";
 
-import {
-  Layout,
-  LayoutStorageContext,
-  LayoutID,
-  ILayoutStorage,
-  ISO8601Timestamp,
-} from "@foxglove/studio-base";
+import { Layout, LayoutID, ILayoutStorage, ISO8601Timestamp } from "@foxglove/studio-base";
+import LayoutStorageContext from "@foxglove/studio-base/context/LayoutStorageContext";
 
 export default function MemoryLayoutStorageProvider(
   props: PropsWithChildren<unknown>,
