@@ -1,4 +1,4 @@
-// This example shows how to publish a Marker message from a User Scripts node.
+// This example shows how to publish a Marker message from a User Script node.
 //
 // Publishing Marker messages with a User Script is a good way to visualize non-visual
 // data.

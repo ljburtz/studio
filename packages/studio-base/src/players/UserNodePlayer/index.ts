@@ -478,7 +478,7 @@ export default class UserNodePlayer implements Player {
 
         if (!result) {
           this._problemStore.set(problemKey, {
-            message: `User scripts node ${nodeId} timed out`,
+            message: `User script node ${nodeId} timed out`,
             severity: "warn",
           });
           return;
@@ -503,7 +503,7 @@ export default class UserNodePlayer implements Player {
         if (!result.message) {
           this._problemStore.set(problemKey, {
             severity: "warn",
-            message: `User scripts node ${nodeId} did not produce a message`,
+            message: `User script node ${nodeId} did not produce a message`,
           });
           return;
         }
