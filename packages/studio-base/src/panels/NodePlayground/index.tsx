@@ -214,7 +214,7 @@ function NodePlayground(props: Props) {
   const [inputTitle, setInputTitle] = useState<string>(() => {
     return currentScript
       ? currentScript.filePath + (currentScript.readOnly ? " (READONLY)" : "")
-      : "node name";
+      : "script name";
   });
 
   const prefersDarkMode = theme.palette.mode === "dark";
@@ -259,7 +259,7 @@ function NodePlayground(props: Props) {
     setInputTitle(() => {
       return currentScript
         ? currentScript.filePath + (currentScript.readOnly ? " (READONLY)" : "")
-        : "node name";
+        : "script name";
     });
   }, [currentScript]);
 
@@ -368,7 +368,7 @@ function NodePlayground(props: Props) {
                 <StyledInput
                   size="small"
                   disableUnderline
-                  placeholder="node name"
+                  placeholder="script name"
                   value={inputTitle}
                   disabled={!currentScript || currentScript.readOnly}
                   onChange={(ev) => {
