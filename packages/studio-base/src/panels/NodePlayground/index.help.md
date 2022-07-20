@@ -2,7 +2,7 @@ Write code to manipulate, aggregate, and filter existing messages on topics and 
 
 _User Scripts_ are written in [TypeScript](https://www.typescriptlang.org/).
 
-When you create a new node, you’ll be presented with some boilerplate to get started. Every node must declare 3 [exports](https://www.typescriptlang.org/docs/handbook/modules.html#export):
+When you create a new script, you’ll be presented with some boilerplate to get started. Every script must declare 3 [exports](https://www.typescriptlang.org/docs/handbook/modules.html#export):
 
 - `inputs: string[]` – An array of topic names
 - `output: string` – Topic for your node's output messages
