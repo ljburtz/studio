@@ -1,7 +1,7 @@
 // This example shows how to subscribe to multiple input topics.
 //
 // NOTE:
-// Node Playground scripts can subscribe to multiple input topics, but can only publish on a single topic.
+// User Scripts scripts can subscribe to multiple input topics, but can only publish on a single topic.
 
 import { Input } from "./types";
 

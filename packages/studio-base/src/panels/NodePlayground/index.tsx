@@ -42,7 +42,6 @@ import { useUserNodeState } from "@foxglove/studio-base/context/UserNodeStateCon
 import { useWorkspace } from "@foxglove/studio-base/context/WorkspaceContext";
 import BottomBar from "@foxglove/studio-base/panels/NodePlayground/BottomBar";
 import Sidebar from "@foxglove/studio-base/panels/NodePlayground/Sidebar";
-import PlaygroundIcon from "@foxglove/studio-base/panels/NodePlayground/playground-icon.svg";
 import { HelpInfoStore, useHelpInfo } from "@foxglove/studio-base/providers/HelpInfoProvider";
 import { usePanelSettingsTreeUpdate } from "@foxglove/studio-base/providers/PanelSettingsEditorContextProvider";
 import { SaveConfig, UserNodes } from "@foxglove/studio-base/types/panels";
@@ -141,9 +140,8 @@ const WelcomeScreen = ({ addNewNode }: { addNewNode: (code?: string) => void }) 
     <EmptyState>
       <Container maxWidth="xs">
         <Stack justifyContent="center" alignItems="center" gap={1} fullHeight>
-          <PlaygroundIcon />
           <Typography variant="inherit" gutterBottom>
-            Welcome to Node Playground!
+            Welcome to User Scripts!
             <br />
             Get started by reading the{" "}
             <Link
