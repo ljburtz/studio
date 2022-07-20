@@ -1,6 +1,6 @@
 Write code to manipulate, aggregate, and filter existing messages on topics and output them to new topics for other Studio panels to visualize.
 
-_User Scripts_ scripts are written in [TypeScript](https://www.typescriptlang.org/).
+_User Scripts_ are written in [TypeScript](https://www.typescriptlang.org/).
 
 When you create a new node, you’ll be presented with some boilerplate to get started. Every node must declare 3 [exports](https://www.typescriptlang.org/docs/handbook/modules.html#export):
 
