@@ -432,7 +432,7 @@ export default class UserNodePlayer implements Player {
 
               this._problemStore.set(problemKey, {
                 severity: "error",
-                message: `User scripts runtime error: ${msg}`,
+                message: `User script runtime error: ${msg}`,
               });
 
               void this._emitState();
