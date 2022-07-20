@@ -15,7 +15,7 @@ import { buildRosMarker, MarkerTypes } from "./markers";
 type GlobalVariables = { id: number };
 
 export const inputs = ["/input/topic"];
-export const output = "/studio_node/my_custom_topic";
+export const output = "/studio_script/my_custom_topic";
 
 // Our node will output a Marker message.
 type Marker = Message<"visualization_msgs/Marker">;

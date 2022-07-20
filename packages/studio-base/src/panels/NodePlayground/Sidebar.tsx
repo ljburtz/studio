@@ -226,8 +226,8 @@ const Sidebar = ({
             ))}
             <ListItem
               disablePadding
-              onClick={gotoUtils.bind(undefined, "/studio_node/generatedTypes.ts")}
-              selected={script ? script.filePath === "/studio_node/generatedTypes.ts" : false}
+              onClick={gotoUtils.bind(undefined, "/studio_script/generatedTypes.ts")}
+              selected={script ? script.filePath === "/studio_script/generatedTypes.ts" : false}
             >
               <ListItemButton>
                 <ListItemText
