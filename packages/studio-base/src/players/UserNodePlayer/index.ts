@@ -503,7 +503,7 @@ export default class UserNodePlayer implements Player {
         if (!result.message) {
           this._problemStore.set(problemKey, {
             severity: "warn",
-            message: `User script node ${nodeId} did not produce a message`,
+            message: `User Script ${nodeId} did not produce a message`,
           });
           return;
         }
