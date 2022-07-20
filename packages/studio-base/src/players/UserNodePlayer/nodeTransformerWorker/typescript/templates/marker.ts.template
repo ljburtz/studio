@@ -1,6 +1,6 @@
 // This example shows how to publish a Marker message from a User Scripts node.
 //
-// Publishing Marker messages with a User Scripts script is a good way to visualize non-visual
+// Publishing Marker messages with a User Script is a good way to visualize non-visual
 // data.
 //
 // For example, if your robot calculates some projected paths and publishes them between two
