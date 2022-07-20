@@ -568,7 +568,7 @@ export default class UserNodePlayer implements Player {
 
         this._problemStore.set("worker-error", {
           severity: "error",
-          message: `User scripts error: ${String(event.data)}`,
+          message: `User Script error: ${String(event.data)}`,
         });
 
         void this._emitState();
