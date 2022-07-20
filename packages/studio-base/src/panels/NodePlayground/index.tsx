@@ -155,7 +155,7 @@ const WelcomeScreen = ({ addNewNode }: { addNewNode: (code?: string) => void }) 
             >
               docs
             </Link>
-            , or just create a new node.
+            , or just create a new script.
           </Typography>
           <Button
             color="inherit"
@@ -163,7 +163,7 @@ const WelcomeScreen = ({ addNewNode }: { addNewNode: (code?: string) => void }) 
             onClick={() => addNewNode()}
             startIcon={<AddIcon />}
           >
-            New node
+            New script
           </Button>
         </Stack>
       </Container>
