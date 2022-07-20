@@ -405,7 +405,7 @@ export default class UserNodePlayer implements Player {
               log.error(event);
 
               this._problemStore.set(problemKey, {
-                message: `User scripts runtime error: ${event.message}`,
+                message: `User script runtime error: ${event.message}`,
                 severity: "error",
               });
 
