@@ -46,27 +46,13 @@ const features: Feature[] = [
     description: <>Enable the Legacy Plot panel.</>,
   },
   {
-    key: AppSetting.EXPERIMENTAL_BAG_PLAYER,
-    name: "Experimental bag player",
-    description: (
-      <>The experimental bag player uses a new approach to loading messages from bag files.</>
-    ),
-  },
-  {
-    key: AppSetting.EXPERIMENTAL_DATA_PLATFORM_PLAYER,
-    name: "Experimental data platform player",
+    key: AppSetting.EXPERIMENTAL_LATCHING,
+    name: "Experimental latching",
     description: (
       <>
-        The experimental data platform player uses a new approach to loading messages from Foxglove
-        Data Platform.
+        The experimental latching feature enables message latching for bag, mcap, and data platform
+        sources.
       </>
-    ),
-  },
-  {
-    key: AppSetting.EXPERIMENTAL_MCAP_PLAYER,
-    name: "Experimental mcap player",
-    description: (
-      <>The experimental mcap player uses a new approach to loading messages from mcap files.</>
     ),
   },
 ];
