@@ -281,7 +281,7 @@ const Sidebar = ({
           <STab
             disableRipple
             value="nodes"
-            title="Nodes"
+            title="Scripts"
             icon={<NoteIcon fontSize="large" />}
             data-test="node-explorer"
             onClick={() => updateExplorer(nodesSelected ? undefined : "nodes")}
