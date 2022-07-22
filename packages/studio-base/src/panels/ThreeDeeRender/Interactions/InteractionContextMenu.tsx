@@ -2,7 +2,7 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-import { ListItemText, Menu, MenuItem, MenuProps } from "@mui/material";
+import { Menu, MenuItem, MenuProps } from "@mui/material";
 import { useCallback } from "react";
 
 import { MouseEventObject } from "@foxglove/regl-worldview";
@@ -28,7 +28,6 @@ function InteractionContextMenuItem({
   interactiveObject?: MouseEventObject;
 }): JSX.Element {
   const object = getObject(interactiveObject) as Partial<Interactive<BaseMarker>>;
-  const menuText = <>{object.interactionData?.topic}</>;
 
   const selectItemObject = useCallback(
     () => selectObject(interactiveObject as SelectedObject),
@@ -37,12 +36,7 @@ function InteractionContextMenuItem({
 
   return (
     <MenuItem data-test="InteractionContextMenuItem" onClick={selectItemObject}>
-      <ListItemText
-        primary={menuText}
-        primaryTypographyProps={{
-          noWrap: true,
-        }}
-      />
+      {object.interactionData?.topic}
     </MenuItem>
   );
 }
