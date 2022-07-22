@@ -12,7 +12,7 @@
 //   You may not use this file except in compliance with the License.
 
 import { Dialog, DialogContent, DialogTitle, DialogActions, Button } from "@mui/material";
-import { useCallback, useEffect, useContext, useRef } from "react";
+import { useCallback, useContext, useRef } from "react";
 import { useKeyPressEvent } from "react-use";
 
 import ModalContext from "@foxglove/studio-base/context/ModalContext";
@@ -53,12 +53,6 @@ function ConfirmModal(props: ConfirmModalProps) {
   );
 
   useKeyPressEvent("Enter", () => onComplete("ok"));
-
-  // Ensure we still call onComplete(undefined) when the component unmounts, if it hasn't been
-  // called already
-  useEffect(() => {
-    return () => onComplete("cancel");
-  }, [onComplete]);
 
   const buttons = [
     props.cancel !== false && (

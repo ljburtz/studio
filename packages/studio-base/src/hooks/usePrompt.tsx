@@ -3,7 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import { Button, Dialog, DialogActions, DialogContent, TextField, Typography } from "@mui/material";
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { useKeyPressEvent } from "react-use";
 
 import Stack from "@foxglove/studio-base/components/Stack";
@@ -60,12 +60,6 @@ function ModalPrompt({
     [originalOnComplete],
   );
   useKeyPressEvent("Enter", () => onComplete("ok"));
-
-  // Ensure we still call onComplete(undefined) when the component unmounts, if it hasn't been
-  // called already
-  useEffect(() => {
-    return () => onComplete(undefined);
-  }, [onComplete]);
 
   return (
     <Dialog open maxWidth="xs" fullWidth onClose={() => onComplete(undefined)}>
