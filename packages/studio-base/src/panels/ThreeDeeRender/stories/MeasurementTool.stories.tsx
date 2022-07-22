@@ -7,6 +7,7 @@ import PanelSetup from "@foxglove/studio-base/stories/PanelSetup";
 import delay from "@foxglove/studio-base/util/delay";
 
 import ThreeDeeRender from "../index";
+import { getPublishClickDebugLogElement } from "../renderables/PublishClickTool";
 import { TransformStamped } from "../ros";
 import { QUAT_IDENTITY } from "./common";
 import useDelayedFixture from "./useDelayedFixture";
@@ -18,21 +19,29 @@ export default {
 
 MeasurementTool.parameters = { colorScheme: "dark", chromatic: { delay: 200 } };
 MeasurementTool.play = async () => {
+  getPublishClickDebugLogElement().innerText += "story click button\n";
   document.querySelector<HTMLElement>("[data-test=measure-button]")!.click();
   await delay(100);
-  document
-    .querySelector("canvas")!
-    .dispatchEvent(new MouseEvent("mousedown", { clientX: 100, clientY: 100 }));
-  document
-    .querySelector("canvas")!
-    .dispatchEvent(new MouseEvent("click", { clientX: 100, clientY: 100 }));
-  document
-    .querySelector("canvas")!
-    .dispatchEvent(new MouseEvent("mousedown", { clientX: 300, clientY: 200 }));
-  document
-    .querySelector("canvas")!
-    .dispatchEvent(new MouseEvent("click", { clientX: 300, clientY: 200 }));
+  const canvas = document.querySelector("canvas")!;
+  for (let tries = 0; tries < 10 && (canvas.offsetWidth === 0 || canvas.offsetHeight === 0); ) {
+    getPublishClickDebugLogElement().innerText += `delay because canvas width=${canvas.offsetWidth} height=${canvas.offsetHeight}\n`;
+    await delay(10);
+  }
+  getPublishClickDebugLogElement().innerText += `canvas ${canvas.offsetWidth} ${canvas.offsetHeight}\n`;
+  getPublishClickDebugLogElement().innerText += "story mousedown\n";
+  canvas.dispatchEvent(new MouseEvent("mousedown", { clientX: 100, clientY: 100 }));
+  await delay(10);
+  getPublishClickDebugLogElement().innerText += "story click\n";
+  canvas.dispatchEvent(new MouseEvent("click", { clientX: 100, clientY: 100 }));
+  await delay(10);
+  getPublishClickDebugLogElement().innerText += "story mousedown2\n";
+  canvas.dispatchEvent(new MouseEvent("mousedown", { clientX: 300, clientY: 200 }));
+  await delay(10);
+  getPublishClickDebugLogElement().innerText += "story click2\n";
+  canvas.dispatchEvent(new MouseEvent("click", { clientX: 300, clientY: 200 }));
   await delay(100);
+  await new Promise((resolve) => requestAnimationFrame(resolve));
+  getPublishClickDebugLogElement().innerText += "story end\n";
 };
 export function MeasurementTool(): JSX.Element {
   const topics: Topic[] = [{ name: "/tf", datatype: "geometry_msgs/TransformStamped" }];
