@@ -13,6 +13,7 @@
 
 import { Dialog, DialogContent, DialogTitle, DialogActions, Button } from "@mui/material";
 import { useCallback, useEffect, useContext, useRef } from "react";
+import { useKeyPressEvent } from "react-use";
 
 import ModalContext from "@foxglove/studio-base/context/ModalContext";
 
@@ -50,6 +51,8 @@ function ConfirmModal(props: ConfirmModalProps) {
     },
     [originalOnComplete],
   );
+
+  useKeyPressEvent("Enter", () => onComplete("ok"));
 
   // Ensure we still call onComplete(undefined) when the component unmounts, if it hasn't been
   // called already
