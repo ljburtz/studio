@@ -41,7 +41,7 @@ type LegacyTransform = {
   rotation: Quaternion;
 };
 // Legacy foxglove.FrameTransform type -- see https://github.com/foxglove/schemas/pull/46
-type LegacyFrameTransform = {
+export type LegacyFrameTransform = {
   timestamp: Time;
   parent_frame_id: string;
   child_frame_id: string;
