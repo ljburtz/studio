@@ -2,10 +2,7 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-import { PropsWithChildren, useState } from "react";
-
 import { Layout, LayoutID, ILayoutStorage, ISO8601Timestamp } from "@foxglove/studio-base";
-import LayoutStorageContext from "@foxglove/studio-base/context/LayoutStorageContext";
 
 const LAYOUTS = new Map<string, Layout>([
   [
@@ -95,43 +92,35 @@ const LAYOUTS = new Map<string, Layout>([
   ],
 ]);
 
-export default function MemoryLayoutStorageProvider(
-  props: PropsWithChildren<unknown>,
-): JSX.Element {
-  const [ctx] = useState<ILayoutStorage>(() => {
-    const store = new Map<string, Map<string, Layout>>();
+class MemoryLayoutStorage implements ILayoutStorage {
+  private store = new Map<string, Map<string, Layout>>();
 
-    return {
-      async list(_namespace: string): Promise<readonly Layout[]> {
-        return Array.from(LAYOUTS.values());
-      },
+  async list(_namespace: string): Promise<readonly Layout[]> {
+    return Array.from(LAYOUTS.values());
+  }
 
-      async get(namespace: string, id: LayoutID): Promise<Layout | undefined> {
-        return LAYOUTS.get(id) ?? store.get(namespace)?.get(id);
-      },
+  async get(namespace: string, id: LayoutID): Promise<Layout | undefined> {
+    return LAYOUTS.get(id) ?? this.store.get(namespace)?.get(id);
+  }
 
-      async put(namespace: string, layout: Layout): Promise<Layout> {
-        const namespaceStore = store.get(namespace);
-        if (namespaceStore) {
-          namespaceStore.set(layout.id, layout);
-        } else {
-          store.set(namespace, new Map([[layout.id, layout]]));
-        }
+  async put(namespace: string, layout: Layout): Promise<Layout> {
+    const namespaceStore = this.store.get(namespace);
+    if (namespaceStore) {
+      namespaceStore.set(layout.id, layout);
+    } else {
+      this.store.set(namespace, new Map([[layout.id, layout]]));
+    }
 
-        return layout;
-      },
+    return layout;
+  }
 
-      async delete(namespace: string, id: LayoutID): Promise<void> {
-        store.get(namespace)?.delete(id);
-      },
+  async delete(namespace: string, id: LayoutID): Promise<void> {
+    this.store.get(namespace)?.delete(id);
+  }
 
-      async importLayouts(_args: { fromNamespace: string; toNamespace: string }): Promise<void> {},
+  async importLayouts(_args: { fromNamespace: string; toNamespace: string }): Promise<void> {}
 
-      async migrateUnnamespacedLayouts(_namespace: string) {},
-    };
-  });
-
-  return (
-    <LayoutStorageContext.Provider value={ctx}>{props.children}</LayoutStorageContext.Provider>
-  );
+  async migrateUnnamespacedLayouts(_namespace: string): Promise<void> {}
 }
+
+export { MemoryLayoutStorage };

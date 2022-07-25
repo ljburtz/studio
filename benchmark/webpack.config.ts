@@ -3,7 +3,6 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin";
-import SentryWebpackPlugin from "@sentry/webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
@@ -54,27 +53,6 @@ const mainConfig = (env: unknown, argv: WebpackArgv): Configuration => {
 
   if (isServe) {
     plugins.push(new ReactRefreshPlugin());
-  }
-
-  // Source map upload if configuration permits
-  if (
-    !isDev &&
-    process.env.SENTRY_AUTH_TOKEN != undefined &&
-    process.env.SENTRY_ORG != undefined &&
-    process.env.SENTRY_PROJECT != undefined
-  ) {
-    plugins.push(
-      new SentryWebpackPlugin({
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        org: process.env.SENTRY_ORG,
-        project: process.env.SENTRY_PROJECT,
-        include: path.resolve(__dirname, ".webpack"),
-        setCommits:
-          process.env.SENTRY_REPO && process.env.SENTRY_CURRENT_COMMIT
-            ? { repo: process.env.SENTRY_REPO, commit: process.env.SENTRY_CURRENT_COMMIT }
-            : undefined,
-      }),
-    );
   }
 
   const appWebpackConfig = makeConfig(env, argv, { allowUnusedVariables });
