@@ -18,13 +18,11 @@ export enum AppSetting {
   CRASH_REPORTING_ENABLED = "telemetry.crashReportingEnabled",
 
   // Experimental features
-  UNLIMITED_MEMORY_CACHE = "experimental.unlimited-memory-cache",
   SHOW_DEBUG_PANELS = "showDebugPanels",
   ENABLE_LEGACY_PLOT_PANEL = "enableLegacyPlotPanel",
   EXPERIMENTAL_BAG_PLAYER = "experimental.bag-player",
   EXPERIMENTAL_DATA_PLATFORM_PLAYER = "experimental.data-platform-player",
   EXPERIMENTAL_MCAP_PLAYER = "experimental.mcap-player",
-  EXPERIMENTAL_MESSAGE_ORDER = "experimental.message-order",
 
   // Miscellaneous
   HIDE_SIGN_IN_PROMPT = "hideSignInPrompt",

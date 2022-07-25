@@ -100,8 +100,6 @@ export type RendererConfig = {
     /* Scale factor to apply to all labels */
     labelScaleFactor?: number;
     transforms?: {
-      /** Toggles visibility of all transforms */
-      visible?: boolean;
       /** Toggles visibility of frame axis labels */
       showLabel?: boolean;
       /** Size of frame axis labels */
@@ -978,6 +976,9 @@ export class Renderer extends EventEmitter<RendererEvents> {
     return selectedRenderable;
   }
 
+  /** Tracks the number of frames so we can recompute the defaultFrameId when frames are added. */
+  private _lastTransformFrameCount = 0;
+
   private _updateFrames(): void {
     if (
       this.followFrameId != undefined &&
@@ -988,11 +989,13 @@ export class Renderer extends EventEmitter<RendererEvents> {
       this.renderFrameId = this.followFrameId;
     } else if (
       this.renderFrameId == undefined ||
+      this.transformTree.frames().size !== this._lastTransformFrameCount ||
       !this.transformTree.hasFrame(this.renderFrameId)
     ) {
-      // No valid renderFrameId set, fall back to selecting the heuristically
-      // most valid frame (if any frames are present)
+      // No valid renderFrameId set, or new frames have been added, fall back to selecting the
+      // heuristically most valid frame (if any frames are present)
       this.renderFrameId = this.defaultFrameId();
+      this._lastTransformFrameCount = this.transformTree.frames().size;
 
       if (this.renderFrameId == undefined) {
         this.settings.errors.add(FOLLOW_TF_PATH, NO_FRAME_SELECTED, `No coordinate frames found`);
@@ -1082,8 +1085,9 @@ function baseSettingsTree(): SettingsTreeNodes {
   return {
     general: {},
     scene: {},
-    cameraState: {},
     transforms: {},
     topics: {},
+    layers: {},
+    publish: {},
   };
 }

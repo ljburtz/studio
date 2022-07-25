@@ -33,7 +33,9 @@ class TestSource implements IIterableSource {
     };
   }
 
-  async *messageIterator(_args: MessageIteratorArgs): AsyncIterator<Readonly<IteratorResult>> {}
+  async *messageIterator(
+    _args: MessageIteratorArgs,
+  ): AsyncIterableIterator<Readonly<IteratorResult>> {}
 
   async getBackfillMessages(_args: GetBackfillMessagesArgs): Promise<MessageEvent<unknown>[]> {
     return [];
@@ -112,7 +114,6 @@ describe("IterablePlayer", () => {
         lastSeekTime: 0,
         messages: [],
         totalBytesReceived: 0,
-        messageOrder: "receiveTime",
         speed: 1.0,
         topics: [],
         topicStats: new Map(),
@@ -207,7 +208,6 @@ describe("IterablePlayer", () => {
         lastSeekTime: 0,
         messages: [],
         totalBytesReceived: 0,
-        messageOrder: "receiveTime",
         speed: 1.0,
         topics: [],
         topicStats: new Map(),
@@ -269,7 +269,7 @@ describe("IterablePlayer", () => {
     const origMsgIterator = source.messageIterator.bind(source);
     source.messageIterator = async function* messageIterator(
       _args: MessageIteratorArgs,
-    ): AsyncIterator<Readonly<IteratorResult>> {
+    ): AsyncIterableIterator<Readonly<IteratorResult>> {
       source.messageIterator = origMsgIterator;
 
       yield {
