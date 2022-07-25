@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import Log from "@foxglove/log";
+import { MessageEvent } from "@foxglove/studio";
 import { GlobalVariables } from "@foxglove/studio-base/hooks/useGlobalVariables";
 import { IIterableSource } from "@foxglove/studio-base/players/IterablePlayer/IIterableSource";
 import {
@@ -13,6 +14,7 @@ import {
   PublishPayload,
   SubscribePayload,
 } from "@foxglove/studio-base/players/types";
+import delay from "@foxglove/studio-base/util/delay";
 
 const log = Log.getLogger(__filename);
 
@@ -76,6 +78,18 @@ class BenchmarkPlayer implements Player {
     // initialize
     const result = await this.source.initialize();
 
+    const { start, end, topicStats, datatypes, topics } = result;
+
+    // Bail on any problems
+    for (const problem of result.problems) {
+      throw new Error(problem.message);
+    }
+
+    log.debug("Loading messages");
+
+    // Allow the layout to subscribe to any messages it needs
+    await delay(500);
+
     await listener({
       profile: undefined,
       presence: PlayerPresence.INITIALIZING,
@@ -85,22 +99,29 @@ class BenchmarkPlayer implements Player {
       progress: {},
     });
 
-    // Get all messages
+    // Get all messages for our subscriptions
+    const subscribeTopics = this.subscriptions.map((sub) => sub.topic);
     const iterator = this.source.messageIterator({
-      topics: result.topics.map((topic) => topic.name),
+      topics: subscribeTopics,
     });
+
+    const msgEvents: MessageEvent<unknown>[] = [];
 
     // Load all messages into memory
     for await (const item of iterator) {
-      item;
-
-      // any problem bails the iterator
+      // any problem bails
+      if (item.problem) {
+        throw new Error(item.problem.message);
+      }
+      msgEvents.push(item.msgEvent);
     }
+
+    log.debug(`Loaded ${msgEvents.length} message events`);
+    log.debug("Starting playback");
 
     performance.mark("message-emit-start");
 
-    // we have messages - now we should emit them one by one
-    for (const message of parsedMessages) {
+    for (const msgEvent of msgEvents) {
       await listener({
         profile: undefined,
         presence: PlayerPresence.PRESENT,
@@ -109,12 +130,11 @@ class BenchmarkPlayer implements Player {
         capabilities: [],
         progress: {},
         activeData: {
-          messages: [message],
+          messages: [msgEvent],
           totalBytesReceived: 0,
-          messageOrder: "receiveTime",
           startTime: start,
           endTime: end,
-          currentTime: message.receiveTime,
+          currentTime: msgEvent.receiveTime,
           isPlaying: true,
           speed: 1,
           lastSeekTime: 1,
