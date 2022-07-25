@@ -2,7 +2,7 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-import { Layout, LayoutID, ILayoutStorage, ISO8601Timestamp } from "@foxglove/studio-base";
+import { Layout, LayoutID, ISO8601Timestamp } from "@foxglove/studio-base";
 
 const LAYOUTS = new Map<string, Layout>([
   [
@@ -92,35 +92,4 @@ const LAYOUTS = new Map<string, Layout>([
   ],
 ]);
 
-class MemoryLayoutStorage implements ILayoutStorage {
-  private store = new Map<string, Map<string, Layout>>();
-
-  async list(_namespace: string): Promise<readonly Layout[]> {
-    return Array.from(LAYOUTS.values());
-  }
-
-  async get(namespace: string, id: LayoutID): Promise<Layout | undefined> {
-    return LAYOUTS.get(id) ?? this.store.get(namespace)?.get(id);
-  }
-
-  async put(namespace: string, layout: Layout): Promise<Layout> {
-    const namespaceStore = this.store.get(namespace);
-    if (namespaceStore) {
-      namespaceStore.set(layout.id, layout);
-    } else {
-      this.store.set(namespace, new Map([[layout.id, layout]]));
-    }
-
-    return layout;
-  }
-
-  async delete(namespace: string, id: LayoutID): Promise<void> {
-    this.store.get(namespace)?.delete(id);
-  }
-
-  async importLayouts(_args: { fromNamespace: string; toNamespace: string }): Promise<void> {}
-
-  async migrateUnnamespacedLayouts(_namespace: string): Promise<void> {}
-}
-
-export { MemoryLayoutStorage };
+export { LAYOUTS };

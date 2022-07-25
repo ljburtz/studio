@@ -7,7 +7,8 @@ import { useMemo, useState } from "react";
 import { App, IDataSourceFactory, ConsoleApi, AppSetting } from "@foxglove/studio-base";
 
 import McapLocalBenchmarkDataSourceFactory from "./dataSources/McapLocalBenchmarkDataSourceFactory";
-import { MemoryLayoutStorage, MemoryAppConfiguration } from "./services";
+import { LAYOUTS } from "./layouts";
+import { PredefinedLayoutStorage, MemoryAppConfiguration } from "./services";
 
 export function Root(): JSX.Element {
   const [appConfiguration] = useState(
@@ -25,7 +26,7 @@ export function Root(): JSX.Element {
     return sources;
   }, []);
 
-  const layoutStorage = useMemo(() => new MemoryLayoutStorage(), []);
+  const layoutStorage = useMemo(() => new PredefinedLayoutStorage(LAYOUTS), []);
   const [extensionLoaders] = useState(() => []);
   const consoleApi = useMemo(() => new ConsoleApi(process.env.FOXGLOVE_API_URL!), []);
 

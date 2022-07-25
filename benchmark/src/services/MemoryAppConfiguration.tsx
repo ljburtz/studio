@@ -4,6 +4,12 @@
 
 import { IAppConfiguration, ChangeHandler, AppConfigurationValue } from "@foxglove/studio-base";
 
+/**
+ * MemoryAppConfiguration implements IAppConfiguration by storing and reading configuration from
+ * memory.
+ *
+ * Configuration does not survive any reload nor is it persisted.
+ */
 export class MemoryAppConfiguration implements IAppConfiguration {
   private values = new Map<string, AppConfigurationValue>();
 
