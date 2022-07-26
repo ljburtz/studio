@@ -14,11 +14,13 @@ import { toNanoSec } from "@foxglove/rostime";
 import type { FrameTransform } from "@foxglove/schemas/schemas/typescript";
 import {
   MessageEvent,
+  ParameterValue,
   SettingsIcon,
   SettingsTreeAction,
   SettingsTreeNodeActionItem,
   SettingsTreeNodes,
   Topic,
+  VariableValue,
 } from "@foxglove/studio";
 import { fonts } from "@foxglove/studio-base/util/sharedStyleConstants";
 import { LabelPool } from "@foxglove/three-text";
@@ -78,8 +80,13 @@ export type RendererEvents = {
     cursorCoords: { x: number; y: number },
     renderer: Renderer,
   ) => void;
+  selectedRenderable: (renderable: Renderable | undefined, renderer: Renderer) => void;
   parametersChange: (
-    parameters: ReadonlyMap<string, unknown> | undefined,
+    parameters: ReadonlyMap<string, ParameterValue> | undefined,
+    renderer: Renderer,
+  ) => void;
+  variablesChange: (
+    variables: ReadonlyMap<string, VariableValue> | undefined,
     renderer: Renderer,
   ) => void;
   transformTreeUpdated: (renderer: Renderer) => void;
@@ -197,7 +204,8 @@ export class Renderer extends EventEmitter<RendererEvents> {
   settings: SettingsManager;
   topics: ReadonlyArray<Topic> | undefined;
   topicsByName: ReadonlyMap<string, Topic> | undefined;
-  parameters: ReadonlyMap<string, unknown> | undefined;
+  parameters: ReadonlyMap<string, ParameterValue> | undefined;
+  variables: ReadonlyMap<string, VariableValue> = new Map();
   // extensionId -> SceneExtension
   sceneExtensions = new Map<string, SceneExtension>();
   // datatype -> handler[]
@@ -569,11 +577,19 @@ export class Renderer extends EventEmitter<RendererEvents> {
     }
   }
 
-  setParameters(parameters: ReadonlyMap<string, unknown> | undefined): void {
+  setParameters(parameters: ReadonlyMap<string, ParameterValue> | undefined): void {
     const changed = this.parameters !== parameters;
     this.parameters = parameters;
     if (changed) {
       this.emit("parametersChange", parameters, this);
+    }
+  }
+
+  setVariables(variables: ReadonlyMap<string, VariableValue>): void {
+    const changed = this.variables !== variables;
+    this.variables = variables;
+    if (changed) {
+      this.emit("variablesChange", variables, this);
     }
   }
 
@@ -656,6 +672,8 @@ export class Renderer extends EventEmitter<RendererEvents> {
       selectObject(selectedRenderable);
       log.debug(`Selected ${selectedRenderable.id} (${selectedRenderable.name})`);
     }
+
+    this.emit("selectedRenderable", selectedRenderable, this);
 
     this.animationFrame();
   }
