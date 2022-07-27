@@ -176,7 +176,11 @@ export function TruncatedLayoutNameSelected(): JSX.Element {
 }
 
 export function AddLayout(_args: unknown): JSX.Element {
-  return <LayoutBrowser />;
+  return (
+    <LayoutBrowser
+      currentDateForStorybook={useMemo(() => new Date("2021-06-16T04:28:33.549Z"), [])}
+    />
+  );
 }
 AddLayout.parameters = { colorScheme: "dark" };
 AddLayout.play = async () => {
@@ -220,7 +224,7 @@ EditingName.play = async () => {
 export function CancelRenameWithEscape(_args: unknown): JSX.Element {
   return <LayoutBrowser />;
 }
-CancelRenameWithEscape.parameters = { colorScheme: "light" };
+CancelRenameWithEscape.parameters = { colorScheme: "dark" };
 CancelRenameWithEscape.play = async () => {
   const actions = await screen.findAllByTestId("layout-actions");
   if (actions[1]) {
