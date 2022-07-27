@@ -272,7 +272,13 @@ DeleteLayout.play = async () => await deleteLayoutInteraction(0);
 export function DeleteSelectedLayout(_args: unknown): JSX.Element {
   return <LayoutBrowser />;
 }
-DeleteSelectedLayout.play = async () => await deleteLayoutInteraction(1);
+DeleteSelectedLayout.play = async () => {
+  const layouts = await screen.findAllByTestId("layout-list-item");
+  if (layouts[1]) {
+    fireEvent.click(layouts[1]);
+  }
+  await deleteLayoutInteraction(1);
+};
 DeleteSelectedLayout.parameters = { colorScheme: "dark" };
 
 export function DeleteLastLayout(_args: unknown): JSX.Element {
