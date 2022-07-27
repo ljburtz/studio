@@ -60,7 +60,7 @@ export default function Root({
       }),
       new SampleNuscenesDataSourceFactory({ useIterablePlayer: enableExperimentalLatching }),
       new McapLocalDataSourceFactory({ useIterablePlayer: enableExperimentalLatching }),
-      new McapRemoteDataSourceFactory(),
+      new McapRemoteDataSourceFactory({ useIterablePlayer: enableExperimentalLatching }),
     ];
 
     return sources;
